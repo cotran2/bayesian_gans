@@ -4,7 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from pathlib import Path
-
+from functools import partial
 import tensorflow as tf
 from absl import flags
 from tensorflow import random
@@ -38,7 +38,7 @@ class WGAN_GP:
 
 
     def train_uniform_gausian(self):
-        x_real = random.normal((self.params.n_samples, 1, 1, self.z_dim))
+        x_real = random.normal((self.params.n_samples, self.z_dim, self.z_dim, 3))
         g_train_loss = metrics.Mean()
         d_train_loss = metrics.Mean()
         for epoch in range(self.epochs):
@@ -153,3 +153,20 @@ class WGAN_GP:
 
         x = ops.Conv2D(1, 4, 1, 'valid')(x)
         return models.Model(inputs, x, name='Discriminator')
+
+if __name__ == "__main__":
+    class HyperParameters:
+        z_size = 16
+        epochs = 1000
+        batch_size = 1
+        image_size = 16
+        n_critic = 5
+        g_penalty = 10
+        total_images = 1
+        total_num_examples = 1
+        g_lr = .0001
+        d_lr = .0001
+        n_samples = 1
+    pararms = HyperParameters
+    model = WGAN_GP(pararms)
+    model.train_uniform_gausian()
