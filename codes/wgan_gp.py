@@ -17,15 +17,68 @@ from utils import img_merge
 from utils import pbar
 from utils import save_image_grid
 
-AUTOTUNE = tf.data.experimental.AUTOTUNE
-FLAGS = flags.FLAGS
 
 
 class WGAN_GP:
-    def __init__(self):
+    def __init__(self,pararms):
+        self.z_dim = pararms.z_size
+        self.epochs = pararms.epochs
+        self.batch_size = pararms.batch_size
+        self.image_size = pararms.image_size
+        self.n_critic = pararms.n_critic
+        self.grad_penalty_weight = pararms.g_penalty
+        self.total_images = pararms.total_num_examples
+        self.g_opt = ops.AdamOptWrapper(learning_rate=pararms.g_lr)
+        self.d_opt = ops.AdamOptWrapper(learning_rate=pararms.d_lr)
+        self.G = self.build_generator()
+        self.D = self.build_discriminator()
+        self.params = pararms
+        self.G.summary()
+        self.D.summary()
+
+
+    def train_uniform_gausian(self):
+        x_real = random.normal((self.params.n_samples, 1, 1, self.z_dim))
+        g_train_loss = metrics.Mean()
+        d_train_loss = metrics.Mean()
+        for epoch in range(self.epochs):
+            for _ in range(self.n_critic):
+                self.train_d(x_real)
+                d_loss = self.train_d(x_real)
+                d_train_loss(d_loss)
+            g_loss = self.train_g()
+            g_train_loss(g_loss)
+            self.train_g()
+            g_train_loss.reset_states()
+            d_train_loss.reset_states()
+
+    def train(self, dataset):
+        z = tf.constant(random.normal((self.params.n_samples, 1, 1, self.z_dim)))
+        g_train_loss = metrics.Mean()
+        d_train_loss = metrics.Mean()
+
+        for epoch in range(self.epochs):
+            for batch in dataset:
+                for _ in range(self.n_critic):
+                    self.train_d(batch)
+                    d_loss = self.train_d(batch)
+                    d_train_loss(d_loss)
+
+                g_loss = self.train_g()
+                g_train_loss(g_loss)
+                self.train_g()
+
+
+            g_train_loss.reset_states()
+            d_train_loss.reset_states()
+
+
+            samples = self.generate_samples(z)
+            image_grid = img_merge(samples, n_rows=8).squeeze()
+            save_image_grid(image_grid, epoch + 1)
     @tf.function
     def train_g(self):
-        z = random.normal((self.batch_size, 1, 1, self.z_dim))
+        z = random.uniform((self.batch_size, 1, 1, self.z_dim))
         with tf.GradientTape() as t:
             x_fake = self.G(z, training=True)
             fake_logits = self.D(x_fake, training=True)
@@ -35,8 +88,8 @@ class WGAN_GP:
         return loss
 
     @tf.function
-    def train_d(self, x_real):
-        z = random.normal((self.batch_size, 1, 1, self.z_dim))
+    def train_d(self,x_real):
+        z = random.uniform((self.batch_size, 1, 1, self.z_dim))
         with tf.GradientTape() as t:
             x_fake = self.G(z, training=True)
             fake_logits = self.D(x_fake, training=True)
