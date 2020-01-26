@@ -69,6 +69,48 @@ def test_3d_visualization():
     ax.view_init(27, -21)
 
     plt.show()
+
+
+class distribution():
+    """
+    Distribution class for type 1 or type 2
+    """
+    def __init__(self, size = 100, sigma_1 = 1, sigma_2 = 1, mu_1 = 1, mu_2 = 1, int_start = -4,int_end = 4):
+        self.size = int(size)
+        self.sigma_1 = float(sigma_1)
+        self.sigma_2 = float(sigma_2)
+        self.mu_1 = float(mu_1)
+        self.mu_2 = float(mu_2)
+        self.start = float(int_start)
+        self.end = float(int_end)
+    def distribution_1(self, alpha = 1):
+        x_1 = np.linspace(self.start, self.end, self.size)
+        x_2 = np.linspace(self.start, self.end, self.size)
+
+        x_1, x_2 = np.meshgrid(x_1, x_2)
+        z = (1 / (2 * np.pi * self.sigma_1 * self.sigma_2) * np.exp(-((np.sqrt(x_1 ** 2 + x_2 ** 2)- self.mu_1
+                                                                       ) ** 2 / (2 * self.sigma_1 ** 2)
+                                                                      - (x_2 - self.mu_2) ** 2 / (2 * self.sigma_2 ** 2))))
+
+        return x_1,x_2,z
+    def distribution_2(self, alpha = 1):
+        x_1 = np.linspace(self.start, self.end, self.size)
+        x_2 = np.linspace(self.start, self.end, self.size)
+        x_1, x_2 = np.meshgrid(x_1, x_2)
+        sigma_1 = 1/10
+        sigma_2 = np.sqrt(10)
+        z = (1 / (2 * np.pi * sigma_1 * sigma_2))*np.exp(-(x_2 - x_1**2) ** 2 /(2*sigma_1**2) -
+                                                          (x_1 - 1) ** 2 / (2* sigma_2 ** 2))
+
+        return x_1, x_2, z
+    def visualize(self, type = 2):
+        if type == 1:
+            x_1,x_2,z = self.distribution_1()
+        else:
+            x_1, x_2, z = self.distribution_2()
+        plt.contourf(x_1, x_2, z, cmap='Blues')
+        plt.colorbar()
+        plt.show()
 if __name__ == "__main__":
-    test_2d_visualization()
-    test_3d_visualization()
+    d = distribution()
+    d.visualize()
