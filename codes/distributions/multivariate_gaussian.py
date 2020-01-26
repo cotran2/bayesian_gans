@@ -71,7 +71,7 @@ def test_3d_visualization():
     plt.show()
 
 
-class distribution():
+class Distribution():
     """
     Distribution class for type 1 or type 2
     """
@@ -112,5 +112,5 @@ class distribution():
         plt.colorbar()
         plt.show()
 if __name__ == "__main__":
-    d = distribution()
-    d.visualize()
+    d = Distribution()
+    d.visualize(type = 2)
