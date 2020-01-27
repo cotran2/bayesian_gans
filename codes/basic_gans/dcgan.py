@@ -19,7 +19,8 @@ class Generator(keras.Model):
         self.dense_3 = keras.layers.Dense(units=256)
         self.leaky_3 = keras.layers.LeakyReLU(alpha=0.01)
         self.output_layer = keras.layers.Dense(units=784, activation="tanh")
-
+        # optimizers
+        self.opt = tf.keras.optimizers.Adam()
     def call(self, input_tensor):
         ## Definition of Forward Pass
         x = self.input_layer(input_tensor)
@@ -47,9 +48,9 @@ class Discriminator(keras.Model):
         self.leaky_2 = keras.layers.LeakyReLU(alpha=0.01)
         self.dense_3 = keras.layers.Dense(units=128)
         self.leaky_3 = keras.layers.LeakyReLU(alpha=0.01)
-
         self.logits = keras.layers.Dense(units=1)  # This neuron tells us if the input is fake or real
-
+        # Optimizers
+        self.opt = tf.keras.optimizers.Adam()
     def call(self, input_tensor):
         ## Definition of Forward Pass
         x = self.input_layer(input_tensor)
@@ -63,8 +64,6 @@ class Discriminator(keras.Model):
 
 
 def generator_objective(dx_of_gx):
-
-
     # Labels are true here because generator thinks he produces real images.
     return cross_entropy(tf.ones_like(dx_of_gx), dx_of_gx)
 
@@ -72,10 +71,10 @@ def generator_objective(dx_of_gx):
 @tf.function()
 def training_step(generator: Generator, discriminator: Discriminator, images: np.ndarray, k: int = 1,
                   batch_size=32):
+    noise_size = 10
     for _ in range(k):
         with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
             noise = generator.generate_noise(batch_size, noise_size)
-            noise = uniform
             g_z = generator(noise)
             d_x_true = discriminator(images)  # Trainable?
             d_x_fake = discriminator(g_z)  # dx_of_gx
@@ -83,13 +82,13 @@ def training_step(generator: Generator, discriminator: Discriminator, images: np
             discriminator_loss = discriminator_objective(d_x_true, d_x_fake)
             # Adjusting Gradient of Discriminator
             gradients_of_discriminator = disc_tape.gradient(discriminator_loss, discriminator.trainable_variables)
-            discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator,
+            discriminator.opt.apply_gradients(zip(gradients_of_discriminator,
                                                         discriminator.trainable_variables))  # Takes a list of gradient and variables pairs
 
             generator_loss = generator_objective(d_x_fake)
             # Adjusting Gradient of Generator
             gradients_of_generator = gen_tape.gradient(generator_loss, generator.trainable_variables)
-            generator_optimizer.apply_gradients(zip(gradients_of_generator, generator.trainable_variables))
+            generator.opt.apply_gradients(zip(gradients_of_generator, generator.trainable_variables))
 
 
 def discriminator_objective(d_x, g_z, smoothing_factor=0.9):

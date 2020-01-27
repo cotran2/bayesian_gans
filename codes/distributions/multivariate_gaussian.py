@@ -83,6 +83,7 @@ class Distribution():
         self.mu_2 = float(mu_2)
         self.start = float(int_start)
         self.end = float(int_end)
+
     def distribution_1(self, alpha = 1):
         x_1 = np.linspace(self.start, self.end, self.size)
         x_2 = np.linspace(self.start, self.end, self.size)
@@ -113,4 +114,4 @@ class Distribution():
         plt.show()
 if __name__ == "__main__":
     d = Distribution()
-    d.visualize(type = 2)
+    d.visualize(type = 1)
