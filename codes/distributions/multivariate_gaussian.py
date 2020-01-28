@@ -115,3 +115,5 @@ class Distribution():
 if __name__ == "__main__":
     d = Distribution()
     d.visualize(type = 1)
+    x_1,x_2,z = d.distribution_2()
+    print(x_1,x_2,z)
