@@ -84,36 +84,70 @@ class Distribution():
         self.start = float(int_start)
         self.end = float(int_end)
 
-    def distribution_1(self, alpha = 1):
-        x_1 = np.linspace(self.start, self.end, self.size)
-        x_2 = np.linspace(self.start, self.end, self.size)
-
-        x_1, x_2 = np.meshgrid(x_1, x_2)
-        z = (1 / (2 * np.pi * self.sigma_1 * self.sigma_2)) * np.exp(-(np.sqrt(x_1 ** 2 + x_2 ** 2)- self.mu_1
-                                                                       ) ** 2 / (2 * self.sigma_1 ** 2)
-                                                                      - (x_2 - self.mu_2) ** 2 / (2 * self.sigma_2 ** 2))
-
+    def distribution_1(self, z, alpha = 1):
+        z = np.reshape(z, [z.shape[0], 2])
+        x_1, x_2 = z[:, 0], z[:, 1]
+        norm = (1 / (2 * np.pi * self.sigma_1 * self.sigma_2))
+        exp1 = (np.sqrt(x_1 ** 2 + x_2 ** 2)- self.mu_1) ** 2 / (2 * self.sigma_1 ** 2)
+        exp2 = (x_2 - self.mu_2) ** 2 / (2 * self.sigma_2 ** 2)
+        z = norm*(np.exp(-exp1-exp2))
         return x_1,x_2,z
     def distribution_2(self, alpha = 1):
-        x_1 = np.linspace(self.start, self.end, self.size)
-        x_2 = np.linspace(self.start, self.end, self.size)
-        x_1, x_2 = np.meshgrid(x_1, x_2)
+        z = np.reshape(z, [z.shape[0], 2])
+        x_1, x_2 = z[:, 0], z[:, 1]
         sigma_1 = 1/10
         sigma_2 = np.sqrt(10)
         z = (1 / (2 * np.pi * sigma_1 * sigma_2))*np.exp(-(x_2 - x_1**2) ** 2 /(2*sigma_1**2) -
                                                           (x_1 - 1) ** 2 / (2* sigma_2 ** 2))
 
         return x_1, x_2, z
-    def visualize(self, type = 1):
-        if type == 1:
-            x_1,x_2,z = self.distribution_1()
-        elif type == 2:
-            x_1, x_2, z = self.distribution_2()
-        plt.contourf(x_1, x_2, z, cmap='Blues')
-        plt.colorbar()
-        plt.show()
+    def visualize(self, options = 1):
+        if options == 1:
+            r = np.linspace(-5, 5, 1000)
+            z = np.array(np.meshgrid(r, r)).transpose(1, 2, 0)
+            z = np.reshape(z, [z.shape[0] * z.shape[1], -1])
+            x_1,x_2,z = self.distribution_1(z)
+        elif options == 2:
+            r = np.linspace(-5, 5, 1000)
+            z = np.array(np.meshgrid(r, r)).transpose(1, 2, 0)
+            z = np.reshape(z, [z.shape[0] * z.shape[1], -1])
+            x_1, x_2, z = self.distribution_2(z)
+        elif options == "sampling_1":
+            samples = self.metropolis_hastings(self.distribution_1)
+        elif options == "sampling_2":
+            samples = self.metropolis_hastings(self.distribution_2)
+        if type(options) == int:
+            plt.contourf(x_1, x_2, z, cmap='Blues')
+            plt.colorbar()
+            plt.show()
+        else:
+            plt.hexbin(samples[:, 0], samples[:, 1], cmap='rainbow')
+            plt.gca().set_aspect('equal', adjustable='box')
+            plt.xlim([-3, 3])
+            plt.ylim([-3, 3])
+            plt.show()
+
+    def metropolis_hastings(self, density_function, sampling_size = 100000):
+        """
+        mtropolis hasting algorithms for sampling
+        :param density_function:
+        :param sampling_size:
+        :return: samples
+        """
+        burnin_size = 10000
+        sampling_size += burnin_size
+        x0 = np.array([[0, 0]])
+        xt = x0
+        samples = []
+        for i in range(sampling_size):
+            xt_candidate = np.array([np.random.multivariate_normal(xt[0], np.eye(2))])
+            accept_prob = (density_function(xt_candidate)[-1]) / (density_function(xt)[-1])
+            if np.random.uniform(0, 1) < accept_prob:
+                xt = xt_candidate
+            samples.append(xt)
+        samples = np.array(samples[burnin_size:])
+        samples = np.reshape(samples, [samples.shape[0], 2])
+        return samples
 if __name__ == "__main__":
     d = Distribution()
-    d.visualize(type = 1)
-    x_1,x_2,z = d.distribution_2()
-    print(x_1,x_2,z)
+    d.visualize(options = 'sampling_1')
