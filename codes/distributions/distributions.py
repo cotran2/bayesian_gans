@@ -32,6 +32,7 @@ class Distribution():
 
         return x_1, x_2, z
     def visualize(self, options = 1):
+
         if options == 1:
             r = np.linspace(-5, 5, 1000)
             z = np.array(np.meshgrid(r, r)).transpose(1, 2, 0)
