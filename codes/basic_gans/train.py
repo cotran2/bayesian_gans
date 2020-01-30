@@ -8,7 +8,7 @@ class HyperParameters():
     epochs = 100
     dataset = 'mnist'
     batch_size = 100
-    noise_size = 10
+    noise_size = 100
     seed = 1234
 
 if __name__ ==  "__main__":
