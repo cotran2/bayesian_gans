@@ -28,7 +28,7 @@ if __name__ ==  "__main__":
         print('Train data shape : {}'.format(x_train.shape))
         print(x_train.shape)
         discriminator = Discriminator(hidden_units = 4, output_units =2)
-        generator = Generator(hidden_units = 4. output_units = 2)
+        generator = Generator(hidden_units = 4, output_units = 2)
     full_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train)).shuffle(
         8192, seed=params.seed).batch(params.batch_size)
     test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test)).shuffle(
