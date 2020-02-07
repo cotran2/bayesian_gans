@@ -44,5 +44,9 @@ if __name__ ==  "__main__":
                               noise_size = params. noise_size)
             epoch += 1
             print(epoch)
-        fake_image = generator(np.random.uniform(-1, 1, size=(1, 100)))
-        plt.imshow(tf.reshape(fake_image, shape=(28, 28)), cmap="gray")
+        if params.dataset == "mnist":
+            fake_image = generator(np.random.uniform(-1, 1, size=(1, 100)))
+            plt.imshow(tf.reshape(fake_image, shape=(28, 28)), cmap="gray")
+        else:
+            fake_image = generator(np.random.multivariate_normal(mean=[0,0],cov=np.eye(2),size=params.batch_size))
+            np.save('generated_sample.npy',fake_image)
