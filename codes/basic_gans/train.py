@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 class HyperParameters():
     epochs = 100
     dataset = '1'
-    batch_size = 100
+    batch_size = 1
     noise_size = 100
     seed = 1234
     n_samples = 10
@@ -18,16 +18,17 @@ if __name__ ==  "__main__":
 
     cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
 
-    discriminator = Discriminator()
-    generator = Generator()
-
     if params.dataset == "mnist":
         x_train, y_train, x_test, y_test = get_data_mnist()
         print('Train data shape : {}'.format(x_train.shape))
+        discriminator = Discriminator()
+        generator = Generator()
     else:
         x_train, y_train, x_test, y_test = get_data_distribution(params)
         print('Train data shape : {}'.format(x_train.shape))
         print(x_train.shape)
+        discriminator = Discriminator(hidden_units = 4, output_units =2)
+        generator = Generator(hidden_units = 4. output_units = 2)
     full_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train)).shuffle(
         8192, seed=params.seed).batch(params.batch_size)
     test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test)).shuffle(

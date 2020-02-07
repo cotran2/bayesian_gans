@@ -36,7 +36,10 @@ class Generator(keras.Model):
         return self.output_layer(x)
 
     def generate_noise(self, batch_size, random_noise_size):
-        return np.random.uniform(-1, 1, size=(batch_size, random_noise_size))
+        if random_noise_size==2:
+            return np.random.multivariate_normal(mean=[0,0],cov=np.eye(2),size=batch_size)
+        else:
+            return np.random.uniform(-1, 1, size=(batch_size, random_noise_size))
 
 
 class Discriminator(keras.Model):
