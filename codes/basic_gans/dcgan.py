@@ -8,17 +8,20 @@ cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
 
 class Generator(keras.Model):
 
-    def __init__(self, random_noise_size=100):
+    def __init__(self, random_noise_size=100, hidden_units = 128, output_units = 784):
         super().__init__(name='generator')
+        # units
+        self.hidden_units = hidden_units
+        self.output_units = output_units
         # layers
         self.input_layer = keras.layers.Dense(units=random_noise_size)
-        self.dense_1 = keras.layers.Dense(units=128)
+        self.dense_1 = keras.layers.Dense(units=self.hidden_units)
         self.leaky_1 = keras.layers.LeakyReLU(alpha=0.01)
-        self.dense_2 = keras.layers.Dense(units=128)
+        self.dense_2 = keras.layers.Dense(units=self.hidden_units)
         self.leaky_2 = keras.layers.LeakyReLU(alpha=0.01)
-        self.dense_3 = keras.layers.Dense(units=256)
+        self.dense_3 = keras.layers.Dense(units=self.hidden_units)
         self.leaky_3 = keras.layers.LeakyReLU(alpha=0.01)
-        self.output_layer = keras.layers.Dense(units=784, activation="tanh")
+        self.output_layer = keras.layers.Dense(units=self.output_units, activation="tanh")
         # optimizers
         self.opt = tf.keras.optimizers.Adam()
     def call(self, input_tensor):
@@ -37,16 +40,18 @@ class Generator(keras.Model):
 
 
 class Discriminator(keras.Model):
-    def __init__(self):
+    def __init__(self, hidden_units = 128, output_units = 784):
         super().__init__(name="discriminator")
-
-        # Layers
-        self.input_layer = keras.layers.Dense(units=784)
-        self.dense_1 = keras.layers.Dense(units=128)
+        #units
+        self.hidden_units = hidden_units
+        self.output_units = output_units
+        # layers
+        self.input_layer = keras.layers.Dense(units=self.output_units)
+        self.dense_1 = keras.layers.Dense(units=self.hidden_units)
         self.leaky_1 = keras.layers.LeakyReLU(alpha=0.01)
-        self.dense_2 = keras.layers.Dense(units=128)
+        self.dense_2 = keras.layers.Dense(units=self.hidden_units)
         self.leaky_2 = keras.layers.LeakyReLU(alpha=0.01)
-        self.dense_3 = keras.layers.Dense(units=128)
+        self.dense_3 = keras.layers.Dense(units=self.hidden_units)
         self.leaky_3 = keras.layers.LeakyReLU(alpha=0.01)
         self.logits = keras.layers.Dense(units=1)  # This neuron tells us if the input is fake or real
         # Optimizers

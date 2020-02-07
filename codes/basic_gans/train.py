@@ -10,9 +10,9 @@ class HyperParameters():
     batch_size = 100
     noise_size = 100
     seed = 1234
-    n_samples = 1000
+    n_samples = 10
     sampling_size = 10000
-    status = 'not'
+    status = 'train'
 if __name__ ==  "__main__":
     params = HyperParameters
 

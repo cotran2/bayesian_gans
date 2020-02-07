@@ -1,8 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import datasets
 import numpy as np
-import matplotlib.pyplot as plt
-import scipy.interpolate as interpolate
+from tqdm import tqdm
 from codes.distributions import distributions as dist
 
 def get_data_mnist():
@@ -31,7 +30,7 @@ def get_data_distribution(params):
     """
     x_train,y_train,x_test,y_test = [],[],[],[]
     d = dist.Distribution()
-    for _ in range(params.n_samples):
+    for _ in tqdm(range(params.n_samples)):
         x_train.append(np.random.multivariate_normal(mean = [0,0],
                                                      cov = np.eye(2),
                                                      size = params.sampling_size))
