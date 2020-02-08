@@ -65,7 +65,7 @@ class Distribution():
         :param sampling_size:
         :return: samples
         """
-        burnin_size = 10000
+        burnin_size = 5000
         sampling_size += burnin_size
         x0 = np.array([[0, 0]])
         xt = x0

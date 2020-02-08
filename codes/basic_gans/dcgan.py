@@ -11,6 +11,7 @@ class Generator(keras.Model):
     def __init__(self, random_noise_size=100, hidden_units = 128, output_units = 784):
         super().__init__(name='generator')
         # units
+        self.random_noise_size = random_noise_size
         self.hidden_units = hidden_units
         self.output_units = output_units
         # layers

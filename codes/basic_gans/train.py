@@ -5,17 +5,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class HyperParameters():
-    epochs = 100
+    epochs = 1000
     dataset = '1'
-    batch_size = 1
+    batch_size = 10
     noise_size = 100
     seed = 1234
-    n_samples = 10
+    n_samples = 10000
     sampling_size = 10000
     status = 'train'
 if __name__ ==  "__main__":
-    params = HyperParameters
 
+    params = HyperParameters
+    tf.random.set_seed(params.seed)
     cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
 
     if params.dataset == "mnist":
@@ -24,14 +25,19 @@ if __name__ ==  "__main__":
         discriminator = Discriminator()
         generator = Generator()
     else:
-        x_train, y_train, x_test, y_test = get_data_distribution(params)
-        print('Train data shape : {}'.format(x_train.shape))
-        print(x_train.shape)
+        if params.n_samples>=1000:
+            x_train = np.load('x_train.npy')
+            y_train = np.load('y_train.npy')
+            np.save('x_train.npy',x_train)
+            np.save('y_train.npy',y_train)
+        else:
+            x_train, y_train, x_test, y_test = get_data_distribution(params)
+            print('Train data shape : {}'.format(x_train.shape))
+            print(x_train.shape)
         discriminator = Discriminator(hidden_units = 4, output_units =2)
-        generator = Generator(hidden_units = 4, output_units = 2)
+        generator = Generator(random_noise_size = 2, hidden_units = 4, output_units = 2)
+        params.noise_size =2
     full_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train)).shuffle(
-        8192, seed=params.seed).batch(params.batch_size)
-    test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test)).shuffle(
         8192, seed=params.seed).batch(params.batch_size)
     if params.status == "train":
         epoch = 0
@@ -41,12 +47,14 @@ if __name__ ==  "__main__":
                               discriminator = discriminator,
                               images=x,
                               batch_size = params.batch_size,
-                              noise_size = params. noise_size)
+                              noise_size = params.noise_size)
             epoch += 1
             print(epoch)
         if params.dataset == "mnist":
             fake_image = generator(np.random.uniform(-1, 1, size=(1, 100)))
             plt.imshow(tf.reshape(fake_image, shape=(28, 28)), cmap="gray")
         else:
-            fake_image = generator(np.random.multivariate_normal(mean=[0,0],cov=np.eye(2),size=params.batch_size))
+            random_sample = np.random.multivariate_normal(mean=[0,0],cov=np.eye(2),size=params.sampling_size)
+            fake_image = generator(random_sample)
             np.save('generated_sample.npy',fake_image)
+            np.save('random_sample.npy',random_sample)
