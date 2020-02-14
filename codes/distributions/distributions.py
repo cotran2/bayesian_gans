@@ -22,7 +22,7 @@ class Distribution():
         exp2 = (x_2 - self.mu_2) ** 2 / (2 * self.sigma_2 ** 2)
         z = norm*(np.exp(-exp1-exp2))
         return x_1,x_2,z
-    def distribution_2(self, alpha = 1):
+    def distribution_2(self, z, alpha = 1):
         z = np.reshape(z, [z.shape[0], 2])
         x_1, x_2 = z[:, 0], z[:, 1]
         sigma_1 = 1/10

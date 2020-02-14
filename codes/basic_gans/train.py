@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 
 class HyperParameters():
     epochs = 1000
-    dataset = '1'
+    dataset = '2'
     batch_size = 10
     noise_size = 100
     seed = 1234
-    n_samples = 10000
+    n_samples = 10
     sampling_size = 10000
     status = 'train'
 if __name__ ==  "__main__":
