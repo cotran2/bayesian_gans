@@ -20,26 +20,22 @@ class Distribution():
         norm = (1 / (2 * np.pi * self.sigma_1 * self.sigma_2))
         exp1 = (np.sqrt(x_1 ** 2 + x_2 ** 2)- self.mu_1) ** 2 / (2 * self.sigma_1 ** 2)
         exp2 = (x_2 - self.mu_2) ** 2 / (2 * self.sigma_2 ** 2)
-        z = norm*(np.exp(-exp1-exp2))
-        return x_1,x_2,z
+        return x_1,x_2,norm*(np.exp(-exp1-exp2))
     def distribution_2(self, z, alpha = 1):
         z = np.reshape(z, [z.shape[0], 2])
         x_1, x_2 = z[:, 0], z[:, 1]
         sigma_1 = 1/10
         sigma_2 = np.sqrt(10)
-        z = (1 / (2 * np.pi * sigma_1 * sigma_2))*np.exp(-(x_2 - x_1**2) ** 2 /(2*sigma_1**2) -
+        return x_1, x_2, (1 / (2 * np.pi * sigma_1 * sigma_2))*np.exp(-(x_2 - x_1**2) ** 2 /(2*sigma_1**2) -
                                                           (x_1 - 1) ** 2 / (2* sigma_2 ** 2))
-
-        return x_1, x_2, z
     def gaussian(self, z, alpha = 1):
         z = np.reshape(z, [z.shape[0], 2])
         x_1, x_2 = z[:, 0], z[:, 1]
         sigma_1 = 1
         sigma_2 = 1
-        z = (1 / (2 * np.pi * sigma_1 * sigma_2)) * np.exp(-(x_1 ) ** 2 / (2 * sigma_1 ** 2) -
-                                                           (x_2) ** 2 / (2 * sigma_2 ** 2))
 
-        return x_1, x_2, z
+        return x_1, x_2, (1 / (2 * np.pi * sigma_1 * sigma_2)) * np.exp(-(x_1 ) ** 2 / (2 * sigma_1 ** 2) -
+                                                           (x_2) ** 2 / (2 * sigma_2 ** 2))
     def visualize(self, options = 1):
 
         if options == 1:
@@ -88,8 +84,7 @@ class Distribution():
             samples.append([xt[:, 0], xt[:, 1]])
             count = len(np.unique(np.array(samples), axis=0))
         samples = np.unique(np.array(samples), axis=0)
-        samples = samples[burning_size:]
-        return samples
+        return samples[burning_size:]
 
 
 if __name__ == "__main__":

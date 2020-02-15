@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 class HyperParameters():
     epochs = 1000
-    dataset = '2'
+    dataset = '1'
     batch_size = 1
     noise_size = 100
     seed = 1234
