@@ -31,6 +31,15 @@ class Distribution():
                                                           (x_1 - 1) ** 2 / (2* sigma_2 ** 2))
 
         return x_1, x_2, z
+    def gaussian(self, z, alpha = 1):
+        z = np.reshape(z, [z.shape[0], 2])
+        x_1, x_2 = z[:, 0], z[:, 1]
+        sigma_1 = 1
+        sigma_2 = 1
+        z = (1 / (2 * np.pi * sigma_1 * sigma_2)) * np.exp(-(x_1 ) ** 2 / (2 * sigma_1 ** 2) -
+                                                           (x_2) ** 2 / (2 * sigma_2 ** 2))
+
+        return x_1, x_2, z
     def visualize(self, options = 1):
 
         if options == 1:

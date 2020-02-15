@@ -31,9 +31,7 @@ def get_data_distribution(params):
     x_train,y_train,x_test,y_test = [],[],[],[]
     d = dist.Distribution()
     for _ in tqdm(range(params.n_samples)):
-        x_train.append(np.random.multivariate_normal(mean = [0,0],
-                                                     cov = np.eye(2),
-                                                     size = params.sampling_size))
+        x_train.append(np.random.multivariate_normal(mean=[0,0],cov=np.eye(2),size=params.sampling_size))
         if params.dataset == "1":
             y_train.append(d.metropolis_hastings(d.distribution_1,sampling_size= params.sampling_size))
         elif params.dataset == "2":
