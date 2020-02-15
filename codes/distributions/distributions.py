@@ -74,18 +74,21 @@ class Distribution():
         :param sampling_size:
         :return: samples
         """
-        burnin_size = 5000
-        sampling_size += burnin_size
+        burning_size = 100
+        sampling_size += burning_size
         x0 = np.array([[0, 0]])
         xt = x0
         samples = []
-        for i in range(sampling_size):
+        count = 0
+        while count < sampling_size:
             xt_candidate = np.array([np.random.multivariate_normal(xt[0], np.eye(2))])
             accept_prob = (density_function(xt_candidate)[-1]) / (density_function(xt)[-1])
             if np.random.uniform(0, 1) < accept_prob:
                 xt = xt_candidate
-            samples.append(xt)
-        samples = np.array(samples[burnin_size:])
+            else:
+                samples.append(xt)
+                count += 1
+        samples = np.array(samples[burning_size:])
         samples = np.reshape(samples, [samples.shape[0], 2])
         return samples
 

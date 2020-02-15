@@ -36,7 +36,7 @@ if __name__ ==  "__main__":
         if params.data_status=="load":
             x_train = np.load('x_train.npy')
             y_train = np.load('y_train.npy')
-            
+
         elif params.data_status=="save":
             x_train, y_train, x_test, y_test = get_data_distribution(params)
             print('Train data shape : {}'.format(x_train.shape))
