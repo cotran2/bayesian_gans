@@ -6,7 +6,7 @@ import sys
 import os
 sys.path.append(os.path.abspath('../../'))
 from codes.distributions import distributions as dist
-def distribution_1(z, alpha = 1, ):
+def distribution_1(z, alpha = 1):
     sigma_1 = 0.1
     sigma_2 = 0.1
     mu_1 = 1
@@ -17,7 +17,7 @@ def distribution_1(z, alpha = 1, ):
     exp1 = (np.sqrt(x_1 ** 2 + x_2 ** 2)- mu_1) ** 2 / (2 * sigma_1 ** 2)
     exp2 = (x_2 - mu_2) ** 2 / (2 * sigma_2 ** 2)
     z = norm*(np.exp(-exp1-exp2))
-    return x_1,x_2,z
+    return z
 
 def distribution_2( z, alpha = 1):
     z = np.reshape(z, [z.shape[0], 2])
@@ -27,7 +27,7 @@ def distribution_2( z, alpha = 1):
     z = (1 / (2 * np.pi * sigma_1 * sigma_2))*np.exp(-(x_2 - x_1**2) ** 2 /(2*sigma_1**2) -
                                                       (x_1 - 1) ** 2 / (2* sigma_2 ** 2))
 
-    return x_1, x_2, z
+    return z
 
 def gaussian(z, alpha = 1):
     z = np.reshape(z, [z.shape[0], 2])
@@ -37,7 +37,7 @@ def gaussian(z, alpha = 1):
     z = (1 / (2 * np.pi * sigma_1 * sigma_2)) * np.exp(-(x_1 ) ** 2 / (2 * sigma_1 ** 2) -
                                                        (x_2) ** 2 / (2 * sigma_2 ** 2))
 
-
+    return z
 def get_data_mnist():
     """
     get dataset
