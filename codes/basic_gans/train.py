@@ -14,7 +14,7 @@ class HyperParameters():
     noise_size = 100
     seed = 1234
     n_samples = 10
-    sampling_size = 10000
+    sampling_size = 5000
     # train/ not train
     training_status = 'train'
     # save/ load

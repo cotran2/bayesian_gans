@@ -85,11 +85,10 @@ class Distribution():
             accept_prob = (density_function(xt_candidate)[-1]) / (density_function(xt)[-1])
             if np.random.uniform(0, 1) < accept_prob:
                 xt = xt_candidate
-            else:
-                samples.append(xt)
-                count += 1
-        samples = np.array(samples[burning_size:])
-        samples = np.reshape(samples, [samples.shape[0], 2])
+            samples.append([xt[:, 0], xt[:, 1]])
+            count = len(np.unique(np.array(samples), axis=0))
+        samples = np.unique(np.array(samples), axis=0)
+        samples = samples[burning_size:]
         return samples
 
 
