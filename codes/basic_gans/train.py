@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 class HyperParameters():
     epochs = 2000
-    dataset = '2'
+    dataset = '1'
     batch_size = 100
     noise_size = 100
     seed = 1234
@@ -42,7 +42,7 @@ if __name__ ==  "__main__":
             print('Train data shape : {}'.format(x_train.shape))
             print(x_train.shape)
             np.save('x_train_{}.npy'.format(pararms.dataset), x_train)
-            np.save('y_train_{}.npy'.format(pararms.dataset, y_train)
+            np.save('y_train_{}.npy'.format(pararms.dataset), y_train)
         discriminator = Discriminator(hidden_units = 4, output_units =2)
         generator = Generator(random_noise_size = 2, hidden_units = 4, output_units = 2)
         params.noise_size = 2
