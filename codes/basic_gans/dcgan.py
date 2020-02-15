@@ -24,7 +24,7 @@ class Generator(keras.Model):
         self.leaky_3 = keras.layers.LeakyReLU(alpha=0.01)
         self.output_layer = keras.layers.Dense(units=self.output_units, activation="tanh")
         # optimizers
-        self.opt = tf.keras.optimizers.Adam()
+        self.opt = tf.keras.optimizers.SGD(lr = 0.03)
     def call(self, input_tensor):
         ## Definition of Forward Pass
         x = self.input_layer(input_tensor)
@@ -59,7 +59,7 @@ class Discriminator(keras.Model):
         self.leaky_3 = keras.layers.LeakyReLU(alpha=0.01)
         self.logits = keras.layers.Dense(units=1)  # This neuron tells us if the input is fake or real
         # Optimizers
-        self.opt = tf.keras.optimizers.Adam()
+        self.opt = tf.keras.optimizers.SGD(lr = 0.01)
     def call(self, input_tensor):
         ## Definition of Forward Pass
         x = self.input_layer(input_tensor)
@@ -96,7 +96,7 @@ def training_step(generator: Generator, discriminator: Discriminator, images: np
             # Adjusting Gradient of Generator
             gradients_of_generator = gen_tape.gradient(generator_loss, generator.trainable_variables)
             generator.opt.apply_gradients(zip(gradients_of_generator, generator.trainable_variables))
-    return generator_loss
+    return generator_loss,discriminator_loss
 
 
 def discriminator_objective(d_x, g_z, smoothing_factor=0.9):
