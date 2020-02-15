@@ -8,12 +8,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class HyperParameters():
-    epochs = 1000
-    dataset = '1'
-    batch_size = 1
+    epochs = 2000
+    dataset = '2'
+    batch_size = 100
     noise_size = 100
     seed = 1234
-    n_samples = 10
+    n_samples = 1000
     sampling_size = 5000
     # train/ not train
     training_status = 'train'
@@ -34,15 +34,15 @@ if __name__ ==  "__main__":
         generator = Generator()
     else:
         if params.data_status=="load":
-            x_train = np.load('x_train.npy')
-            y_train = np.load('y_train.npy')
+            x_train = np.load('x_train_{}.npy'.format(pararms.dataset))
+            y_train = np.load('y_train_{}.npy'.format(pararms.dataset))
 
         elif params.data_status=="save":
             x_train, y_train, x_test, y_test = get_data_distribution(params)
             print('Train data shape : {}'.format(x_train.shape))
             print(x_train.shape)
-            np.save('x_train.npy', x_train)
-            np.save('y_train.npy', y_train)
+            np.save('x_train_{}.npy'.format(pararms.dataset), x_train)
+            np.save('y_train_{}.npy'.format(pararms.dataset, y_train)
         discriminator = Discriminator(hidden_units = 4, output_units =2)
         generator = Generator(random_noise_size = 2, hidden_units = 4, output_units = 2)
         params.noise_size = 2

@@ -71,6 +71,8 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+# Log files
+codes/basic_gans/logs/
 # PyBuilder
 target/
 
@@ -108,7 +110,8 @@ celerybeat.pid
 *.m4a
 *.txt
 *.npy
-
+*.out
+*.ckpt
 # Environments
 .env
 .venv
