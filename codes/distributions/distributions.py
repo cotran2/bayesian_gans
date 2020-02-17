@@ -83,8 +83,8 @@ class Distribution():
                 xt = xt_candidate
             samples.append([xt[:, 0], xt[:, 1]])
             count = len(np.unique(np.array(samples), axis=0))
-	    if count%100 == 0:
-	        print(count)
+        if count%100 == 0:
+            print(count)
         samples = np.unique(np.array(samples), axis=0)
         return samples[burning_size:]
 
