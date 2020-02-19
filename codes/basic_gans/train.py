@@ -14,7 +14,7 @@ class HyperParameters():
     noise_size = 100
     seed = 1234
     n_samples = 1000
-    sampling_size = 5000
+    sampling_size = 1000
     # train/ not train
     training_status = 'train'
     # save/ load
@@ -34,15 +34,15 @@ if __name__ ==  "__main__":
         generator = Generator()
     else:
         if params.data_status=="load":
-            x_train = np.load('x_train_{}.npy'.format(pararms.dataset))
-            y_train = np.load('y_train_{}.npy'.format(pararms.dataset))
+            x_train = np.load('x_train_{}.npy'.format(params.dataset))
+            y_train = np.load('y_train_{}.npy'.format(params.dataset))
 
         elif params.data_status=="save":
             x_train, y_train, x_test, y_test = get_data_distribution(params)
             print('Train data shape : {}'.format(x_train.shape))
             print(x_train.shape)
-            np.save('x_train_{}.npy'.format(pararms.dataset), x_train)
-            np.save('y_train_{}.npy'.format(pararms.dataset), y_train)
+            np.save('x_train_{}.npy'.format(params.dataset), x_train)
+            np.save('y_train_{}.npy'.format(params.dataset), y_train)
         discriminator = Discriminator(hidden_units = 4, output_units =2)
         generator = Generator(random_noise_size = 2, hidden_units = 4, output_units = 2)
         params.noise_size = 2
