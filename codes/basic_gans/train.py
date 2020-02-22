@@ -36,9 +36,6 @@ if __name__ ==  "__main__":
         if params.data_status=="load":
             x_train = np.load('x_train_{}.npy'.format(params.dataset))
             y_train = np.load('y_train_{}.npy'.format(params.dataset))
-            x_train = np.reshape(x_train,(params.sampling_size*params.n_samples,params.noise_size))
-            y_train = np.reshape(y_train, (params.sampling_size * params.n_samples, params.noise_size))
-            print("Loading inputs with shape: {}".format(x_train.shape))
         elif params.data_status=="save":
             x_train, y_train, x_test, y_test = get_data_distribution(params)
             print('Train data shape : {}'.format(x_train.shape))
@@ -46,9 +43,11 @@ if __name__ ==  "__main__":
             np.save('x_train_{}.npy'.format(params.dataset), x_train)
             np.save('y_train_{}.npy'.format(params.dataset), y_train)
         params.noise_size = 2
+        x_train = np.reshape(x_train, (params.sampling_size * params.n_samples, params.noise_size))
+        y_train = np.reshape(y_train, (params.sampling_size * params.n_samples, params.noise_size))
         discriminator = Discriminator(hidden_units = 4, output_units =params.noise_size)
         generator = Generator(random_noise_size = params.noise_size, hidden_units = 4, output_units = params.noise_size)
-
+        print("Loading inputs with shape: {}".format(x_train.shape))
     full_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train)).shuffle(
         8192, seed=params.seed).batch(params.batch_size)
     current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
