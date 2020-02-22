@@ -81,7 +81,6 @@ def generator_objective(dx_of_gx):
 def training_step(generator: Generator, discriminator: Discriminator, images: np.ndarray, noise: np.ndarray, batch_size = 100, noise_size = 10, k_loop = 1):
     for _ in range(k_loop):
         with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
-            noise = noise
             g_z = generator(noise)
             d_x_true = discriminator(images)  # Trainable?
             d_x_fake = discriminator(g_z)  # dx_of_gx

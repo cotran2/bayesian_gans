@@ -8,13 +8,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class HyperParameters():
-    epochs = 2000
-    dataset = '1'
+    epochs = 1000
+    dataset = '2'
     batch_size = 100
-    noise_size = 100
+    noise_size = 2
     seed = 1234
     n_samples = 1000
-    sampling_size = 1000
+    sampling_size = 500
     # train/ not train
     training_status = 'train'
     # save/ load
@@ -36,16 +36,19 @@ if __name__ ==  "__main__":
         if params.data_status=="load":
             x_train = np.load('x_train_{}.npy'.format(params.dataset))
             y_train = np.load('y_train_{}.npy'.format(params.dataset))
-
+            x_train = np.reshape(x_train,(params.sampling_size*params.n_samples,params.noise_size))
+            y_train = np.reshape(y_train, (params.sampling_size * params.n_samples, params.noise_size))
+            print("Loading inputs with shape: {}".format(x_train.shape))
         elif params.data_status=="save":
             x_train, y_train, x_test, y_test = get_data_distribution(params)
             print('Train data shape : {}'.format(x_train.shape))
             print(x_train.shape)
             np.save('x_train_{}.npy'.format(params.dataset), x_train)
             np.save('y_train_{}.npy'.format(params.dataset), y_train)
-        discriminator = Discriminator(hidden_units = 4, output_units =2)
-        generator = Generator(random_noise_size = 2, hidden_units = 4, output_units = 2)
         params.noise_size = 2
+        discriminator = Discriminator(hidden_units = 4, output_units =params.noise_size)
+        generator = Generator(random_noise_size = params.noise_size, hidden_units = 4, output_units = params.noise_size)
+
     full_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train)).shuffle(
         8192, seed=params.seed).batch(params.batch_size)
     current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -75,5 +78,5 @@ if __name__ ==  "__main__":
         else:
             random_sample = x
             fake_image = generator(random_sample)
-            np.save('generated_sample.npy',fake_image)
-            np.save('random_sample.npy',random_sample)
+            np.save('generated_sample_{}.npy'.format(params.dataset),fake_image)
+            np.save('random_sample_{}.npy'.format(params.dataset),random_sample)
