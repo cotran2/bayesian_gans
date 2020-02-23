@@ -126,11 +126,11 @@ class GAN():
             g_loss = self.combined.train_on_batch(noise, valid_y)
 
             # Plot the progress
-            print("%d [D loss: %f, acc.: %.2f%%] [G loss: %f]" % (epoch, d_loss[0], 100 * d_loss[1], g_loss))
 
             # If at save interval => save generated image samples
             if epoch % params.save_interval == 0:
                 self.save_imgs(epoch)
+                print("%d [D loss: %f, acc.: %.2f%%] [G loss: %f]" % (epoch, d_loss[0], 100 * d_loss[1], g_loss))
 
     def save_imgs(self,epoch):
         params = self.params
