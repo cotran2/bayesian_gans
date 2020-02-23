@@ -112,6 +112,9 @@ celerybeat.pid
 *.npy
 *.out
 *.ckpt
+*.png
+*.img
+
 # Environments
 .env
 .venv
