@@ -59,7 +59,7 @@ class GAN():
         #         model.add(Dense(4))
         #         model.add(LeakyReLU(alpha=0.1))
         model.add(BatchNormalization())
-        model.add(Dense(int(self.params.noise_size), activation='tanh'))
+        model.add(Dense(int(self.params.noise_size), activation='linear'))
         model.add(Reshape(self.img_shape))
 
         model.summary()
