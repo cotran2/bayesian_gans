@@ -8,7 +8,7 @@ import numpy as np
 class HyperParameters():
     epochs = 20000
     dataset = '2'
-    batch_size = 100
+    batch_size = 1000
     noise_size = 2
     seed = 1234
     n_samples = 1000
@@ -25,7 +25,7 @@ if __name__ ==  "__main__":
     cwd = os.path.dirname(os.path.dirname(os.getcwd()))
     params.data_path = cwd + '/data'
     params.result_path = cwd + '/results/gan'
-    params.img_path = cwd + '/results/gan/img'
+    params.img_path = cwd + '/results/gan/img/distribution_{}'.format(params.dataset)
     tf.random.set_seed(params.seed)
     cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
     if not os.path.exists(params.result_path):

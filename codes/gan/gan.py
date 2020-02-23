@@ -140,9 +140,10 @@ class GAN():
         gen_imgs = self.generator.predict(noise)
 
         # Rescale images 0 - 1
-
+        fig, ax = plt.subplots(nrows=1, ncols=1)
         plt.hexbin(gen_imgs[:, 0], gen_imgs[:, 1], C= gen_imgs.squeeze(), cmap='rainbow')
         plt.gca().set_aspect('equal', adjustable='box')
         plt.xlim([-3, 3])
         plt.ylim([-3, 3])
-        plt.savefig(self.params.img_path+"/{}.png".format(epoch), dpi=300, bbox_inches='tight')
+        fig.savefig(self.params.img_path+"/{}.png".format(epoch), dpi=300, bbox_inches='tight')
+        plt.close(fig)

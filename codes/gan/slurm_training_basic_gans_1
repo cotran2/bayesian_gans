@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#SBATCH -J training_basic_gans_1
+#SBATCH -p gtx
+#SBATCH -N 1
+#SBATCH -n 4
+#SBATCH -t 12:00:00
+#SBATCH -o gans_output_1.out
+#SBATCH --mail-user=cotran2@utexas.edu
+#SBATCH --mail-type=all
+
+module load intel/17.0.4 python3/3.6.3 cuda/10.0 cudnn/7.6.2 nccl/2.4.7
+pip3 install --user tensorflow-gpu==2.0.0b1
+ibrun -np4 python3 train_distribution_1.py
