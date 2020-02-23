@@ -6,7 +6,7 @@ from tqdm import tqdm
 import numpy as np
 
 class HyperParameters():
-    epochs = 1000
+    epochs = 20000
     dataset = '2'
     batch_size = 100
     noise_size = 2
@@ -18,7 +18,8 @@ class HyperParameters():
     # save/ load
     data_status = 'load'
     # write/ not
-    writing_status = 'load'
+    writing_status = 'not'
+    save_interval = 200
 if __name__ ==  "__main__":
     params = HyperParameters
     cwd = os.path.dirname(os.path.dirname(os.getcwd()))
@@ -29,8 +30,8 @@ if __name__ ==  "__main__":
     cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
     if not os.path.exists(params.result_path):
         os.makedirs(params.result_path)
-    if not os.path.exists(params.result_path):
-        os.makedirs(params.result_path)
+    if not os.path.exists(params.img_path):
+        os.makedirs(params.img_path)
     if params.data_status=="load":
         x_train = np.load(params.data_path+'/x_train_{}.npy'.format(params.dataset))
         y_train = np.load(params.data_path+'/y_train_{}.npy'.format(params.dataset))

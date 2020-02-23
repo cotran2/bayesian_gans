@@ -60,7 +60,7 @@ class GAN():
         #         model.add(Dense(4))
         #         model.add(LeakyReLU(alpha=0.1))
         model.add(BatchNormalization())
-        model.add(Dense(int(params.noise_size), activation='tanh'))
+        model.add(Dense(int(self.params.noise_size), activation='tanh'))
         model.add(Reshape(self.img_shape))
 
         model.summary()
@@ -133,6 +133,7 @@ class GAN():
                 self.save_imgs(epoch)
 
     def save_imgs(self,epoch):
+        params = self.params
         noise = np.random.multivariate_normal(mean=[0, 0], cov=np.eye(2), size=(params.batch_size))
         print(noise.shape)
         # noise = np.random.uniform(0,1,size = (params.batch_size,params.noise_size))
@@ -144,4 +145,4 @@ class GAN():
         plt.gca().set_aspect('equal', adjustable='box')
         plt.xlim([-3, 3])
         plt.ylim([-3, 3])
-        plt.savefig(self.params.img_path+"/%d.png".format(epoch), dpi=300, bbox_inches='tight')
+        plt.savefig(self.params.img_path+"/{}.png".format(epoch), dpi=300, bbox_inches='tight')
