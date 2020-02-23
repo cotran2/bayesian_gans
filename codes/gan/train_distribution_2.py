@@ -4,7 +4,8 @@ from utils import *
 import os
 from tqdm import tqdm
 import numpy as np
-
+import matplotlib
+matplotlib.use("Agg")
 class HyperParameters():
     epochs = 50000
     dataset = '2'

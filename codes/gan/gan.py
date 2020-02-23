@@ -8,12 +8,11 @@ from tensorflow.keras.layers import UpSampling2D, Conv2D
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.optimizers import Adam
 import os
-import matplotlib.pyplot as plt
-
+import matplotlib
 import sys
-
+matplotlib.use("Agg")
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 class GAN():
     def __init__(self, params):

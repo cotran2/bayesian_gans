@@ -4,15 +4,16 @@ from utils import *
 import os
 from tqdm import tqdm
 import numpy as np
-
+import matplotlib
+matplotlib.use("Agg")
 class HyperParameters():
-    epochs = 20000
-    dataset = '2'
+    epochs = 50000
+    dataset = '1'
     batch_size = 1000
     noise_size = 2
     seed = 1234
     n_samples = 1000
-    sampling_size = 500
+    sampling_size = 1000
     # train/ not train
     training_status = 'train'
     # save/ load
