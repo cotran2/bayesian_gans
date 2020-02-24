@@ -59,7 +59,7 @@ class GAN():
         #         model.add(Dense(4))
         #         model.add(LeakyReLU(alpha=0.1))
         model.add(BatchNormalization())
-        model.add(Dense(int(self.params.noise_size), activation='tanh'))
+        model.add(Dense(int(self.params.noise_size), activation='linear'))
         model.add(Reshape(self.img_shape))
 
         model.summary()
@@ -142,7 +142,7 @@ class GAN():
         fig, ax = plt.subplots(nrows=1, ncols=1)
         plt.hexbin(gen_imgs[:, 0], gen_imgs[:, 1], C= gen_imgs.squeeze(), cmap='rainbow')
         plt.gca().set_aspect('equal', adjustable='box')
-        plt.xlim([-3, 3])
-        plt.ylim([-3, 3])
+        plt.xlim([-5, 5])
+        plt.ylim([-5, 5])
         fig.savefig(self.params.img_path+"/{}.png".format(epoch), dpi=300, bbox_inches='tight')
         plt.close(fig)

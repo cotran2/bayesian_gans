@@ -17,7 +17,7 @@ class HyperParameters():
     # train/ not train
     training_status = 'train'
     # save/ load
-    data_status = 'load'
+    data_status = 'save'
     # write/ not
     writing_status = 'not'
     save_interval = 200
@@ -40,8 +40,8 @@ if __name__ ==  "__main__":
         x_train, y_train, x_test, y_test = get_data_distribution(params)
         print('Train data shape : {}'.format(x_train.shape))
         print(x_train.shape)
-        np.save('x_train_{}.npy'.format(params.dataset), x_train)
-        np.save('y_train_{}.npy'.format(params.dataset), y_train)
+        np.save(params.data_path+'/x_train_{}.npy'.format(params.dataset), x_train)
+        np.save(params.data_path+'/y_train_{}.npy'.format(params.dataset), y_train)
         params.noise_size = 2
     print("Loading inputs with shape: {}".format(y_train.shape))
     if params.training_status == "train":
