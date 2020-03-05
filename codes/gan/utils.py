@@ -72,8 +72,8 @@ def get_data_distribution(params):
     elif params.dataset == "2":
         func = distribution_2
     for _ in tqdm(range(params.n_samples)):
-        #x_train.append(np.random.multivariate_normal(mean=[0,0],cov=np.eye(2),size=params.sampling_size))
-        x_train.append(0)
+        x_train.append(np.random.multivariate_normal(mean=[0,0],cov=np.eye(2),size=params.sampling_size))
+        #x_train.append(0)
         y_train.append(d.metropolis_hastings(func, burning_size = 0, sampling_size=params.sampling_size))
     x_train = tf.convert_to_tensor(np.array(x_train), np.float32)
     y_train = tf.convert_to_tensor(np.array(y_train), np.float32)

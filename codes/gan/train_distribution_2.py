@@ -17,7 +17,7 @@ class HyperParameters():
     # train/ not train
     training_status = 'train'
     # save/ load
-    data_status = 'save'
+    data_status = 'load'
     # write/ not
     writing_status = 'not'
     save_interval = 200

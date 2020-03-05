@@ -144,5 +144,5 @@ class GAN():
         plt.gca().set_aspect('equal', adjustable='box')
         plt.xlim([-5, 5])
         plt.ylim([-5, 5])
-        fig.savefig(self.params.img_path+"/{}.png".format(epoch), dpi=300, bbox_inches='tight')
+        fig.savefig(self.params.img_path+"/{}.png".format(epoch), dpi=800, bbox_inches='tight')
         plt.close(fig)

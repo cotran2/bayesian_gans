@@ -63,14 +63,13 @@ class Distribution():
             plt.ylim([-3, 3])
             plt.show()
 
-    def metropolis_hastings(self, density_function, sampling_size = 100000):
+    def metropolis_hastings(self, density_function, burning_size = 100, sampling_size = 100000):
         """
         mtropolis hasting algorithms for sampling
         :param density_function:
         :param sampling_size:
         :return: samples
         """
-        burning_size = 100
         sampling_size += burning_size
         x0 = np.array([[0, 0]])
         xt = x0
@@ -83,8 +82,8 @@ class Distribution():
                 xt = xt_candidate
             samples.append([xt[:, 0], xt[:, 1]])
             count = len(np.unique(np.array(samples), axis=0))
-        if count%100 == 0:
-            print(count)
+            if count%100 == 0:
+                print(count)
         samples = np.unique(np.array(samples), axis=0)
         return samples[burning_size:]
 

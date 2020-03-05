@@ -17,12 +17,13 @@ class HyperParameters():
     # train/ not train
     training_status = 'train'
     # save/ load
-    data_status = 'save'
+    data_status = 'load'
     # write/ not
     writing_status = 'not'
     save_interval = 200
 if __name__ ==  "__main__":
-    params = HyperParameters
+    print("Loading data")
+    params = HyperParameters()
     cwd = os.path.dirname(os.path.dirname(os.getcwd()))
     params.data_path = cwd + '/data'
     params.result_path = cwd + '/results/gan'
