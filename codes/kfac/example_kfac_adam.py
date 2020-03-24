@@ -4,7 +4,7 @@ import math
 import kfac
 from utils import *
 
-if __name__ == "___main__":
+if __name__ == "__main__":
   TRAINING_SIZE = 40000
   VALIDATION_SIZE = 10000
   TEST_SIZE = 10000
@@ -98,4 +98,5 @@ if __name__ == "___main__":
                       validation_data=data['validation'],
                       validation_steps=val_steps,
                       callbacks=training_callbacks)
+  print('Training')
 

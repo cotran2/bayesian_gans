@@ -3,6 +3,21 @@ import tensorflow_datasets as tfds
 import math
 import kfac
 
+TRAINING_SIZE = 40000
+VALIDATION_SIZE = 10000
+TEST_SIZE = 10000
+SEED = 20190524
+
+num_training_steps = 7500
+batch_size = 1000
+layers = tf.keras.layers
+
+# We take the ceiling because we do not drop the remainder of the batch
+compute_steps_per_epoch = lambda x: int(math.ceil(1. * x / batch_size))
+steps_per_epoch = compute_steps_per_epoch(TRAINING_SIZE)
+val_steps = compute_steps_per_epoch(VALIDATION_SIZE)
+
+optimizer_name = 'kfac'  # 'kfac' or 'adam'
 def _parse_fn(x):
     image, label = x['image'], x['label']
     image = tf.cast(image, tf.float32)
@@ -34,8 +49,8 @@ def _get_raw_data():
   train_split = tfds.Split.TRAIN.subsplit(tfds.percent[:training_pct])
   validation_split = tfds.Split.TRAIN.subsplit(tfds.percent[training_pct:])
 
-  train_data, info = tfds.load('cifar10:3.*.*', with_info=True, split=train_split)
-  val_data = tfds.load('cifar10:3.*.*', split=validation_split)
+  train_data, info = tfds.load('cifar10:3.*.*', with_info=True, split="train[:80]")
+  val_data = tfds.load('cifar10:3.*.*', split="train[80:]")
   test_data = tfds.load('cifar10:3.*.*', split='test')
 
   input_shape = info.features['image'].shape
